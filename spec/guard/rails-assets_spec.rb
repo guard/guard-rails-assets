@@ -46,6 +46,15 @@ describe Guard::RailsAssets do
   end
 
   describe 'custom assets prefix' do
-    it 'should use given prefix'
+    before(:each) do
+      options[:assets_prefix] = 'my/assets'
+    end
+
+    it 'should use given prefix for cleanup and compilation' do
+      subject.should_receive(:system).with("rm -rf public/my/assets && bundle exec rake assets:precompile").and_return true
+      subject.should_receive(:`).with('tree public/my/assets').and_return "a\nb\n1 directory, 2 files"
+      Guard::Notifier.should_receive(:notify).with('1 directory, 2 files', :title => 'Assets compiled')
+      subject.compile_assets
+    end
   end
 end

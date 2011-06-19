@@ -6,6 +6,7 @@ module Guard
     def initialize(watchers=[], options={})
       super
       @options = options || {}
+      @options[:assets_prefix] ||= 'assets'
     end
 
     def start
@@ -26,9 +27,9 @@ module Guard
 
     def compile_assets
       puts 'Compiling rails assets'
-      result = system "rm -rf public/assets && bundle exec rake assets:precompile"   
+      result = system "rm -rf #{assets_dir} && bundle exec rake assets:precompile"
       if result
-        tree = `tree public/assets`
+        tree = `tree #{assets_dir}`
         puts tree
         summary = tree.split("\n").last
         Notifier::notify summary, :title => 'Assets compiled'
@@ -38,6 +39,10 @@ module Guard
     end
 
     private
+
+    def assets_dir
+      @assets_dir ||= "public/#{@options[:assets_prefix]}"
+    end
 
     def run_for? command
       run_on = @options[:run_on]
