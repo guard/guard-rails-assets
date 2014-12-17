@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "guard-rails-assets"
 
-  s.add_dependency             'guard'
+  s.add_dependency             'guard', '~> 2.6.0'
   s.add_dependency             'rake'
   s.add_dependency             'rails', '>= 3.1.1'
   s.add_development_dependency 'rspec'
