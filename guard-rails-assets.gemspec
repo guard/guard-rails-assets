@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency             'rake'
   s.add_dependency             'rails', '>= 3.1.1'
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'nenv', '~> 0.1'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
