@@ -1,4 +1,4 @@
-shared_examples_for "guard command" do |info|
+RSpec.shared_examples_for "guard command" do |info|
 
   def set_run_on_option info
     # run_on_change -> change

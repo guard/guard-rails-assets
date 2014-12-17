@@ -1,7 +1,8 @@
-require 'spec_helper'
 require 'guard/rails-assets'
 
-describe Guard::RailsAssets do
+require_relative '../support/shared_examples'
+
+RSpec.describe Guard::RailsAssets do
 
 
   context 'with any runner' do
@@ -73,7 +74,7 @@ describe Guard::RailsAssets do
     it 'should use CLI runner' do
       Guard::RailsAssets.new(['watchers'], :runner => :cli).runner.class.should == ::Guard::RailsAssets::CliRunner
     end
-    
+
     it 'should use RailsRunner' do
       Guard::RailsAssets.new(['watchers'], :runner => :rails).runner.class.should == ::Guard::RailsAssets::RailsRunner
     end

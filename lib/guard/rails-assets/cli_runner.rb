@@ -1,3 +1,5 @@
+require "guard/rails-assets"
+
 module Guard
   class RailsAssets::CliRunner
     def initialize(options={})

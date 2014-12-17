@@ -1,6 +1,5 @@
-require 'spec_helper'
-
-describe Guard::RailsAssets::CliRunner do
+require "guard/rails-assets/cli_runner"
+RSpec.describe Guard::RailsAssets::CliRunner do
 
   it 'should run the command' do
     subject.stub(:system)

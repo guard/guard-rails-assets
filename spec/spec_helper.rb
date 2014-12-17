@@ -1,24 +1,31 @@
-require 'rspec'
-require 'guard/rails-assets'
-require 'support/shared_examples'
-require 'support/stdout_helper'
-require 'guard/rails-assets/cli_runner'
-require 'guard/rails-assets/rails_runner'
+require 'nenv'
 
 RSpec.configure do |config|
-  config.color_enabled = true
-  config.filter_run :focus => true
+  config.expect_with :rspec do |expectations|
+    # TODO: reenable
+    # expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+  end
+
+  config.mock_with :rspec do |mocks|
+    # TODO: reenable
+    # mocks.verify_partial_doubles = true
+  end
+
+  config.filter_run focus: !Nenv.ci?
   config.run_all_when_everything_filtered = true
 
-  config.before(:each) do
-    ENV["GUARD_ENV"] = 'test'
-    @project_path = Pathname.new(File.expand_path('../../', __FILE__))
+  # TODO: reenable
+  # config.disable_monkey_patching!
+
+  config.warnings = true
+
+  if config.files_to_run.one?
+    config.default_formatter = 'doc'
   end
 
-  config.after(:each) do
-    ENV["GUARD_ENV"] = nil
-  end
-  
-  config.include(Helpers)
+  # config.profile_examples = 10
 
+  config.order = :random
+
+  Kernel.srand config.seed
 end
