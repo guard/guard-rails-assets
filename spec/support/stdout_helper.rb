@@ -1,9 +1,8 @@
 require 'stringio'
 
 module Helpers
-  
   def capture(*streams)
-    streams.map! { |stream| stream.to_s }
+    streams.map!(&:to_s)
     begin
       result = StringIO.new
       streams.each { |stream| eval "$#{stream} = result" }
@@ -13,5 +12,4 @@ module Helpers
     end
     result.string
   end
-  
 end

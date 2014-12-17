@@ -1,6 +1,5 @@
 require 'rake/dsl_definition'
 module Guard
-
   class RailsAssets::RailsRunner
     include Rake::DSL
 
@@ -8,15 +7,15 @@ module Guard
     @@rails_env = nil
     @@digest = nil
 
-    def initialize(options={})
+    def initialize(options = {})
       @@rails_env = (options[:rails_env] || 'test').to_s unless @@rails_booted
       @@digest = options[:digest]
     end
 
     def self.apply_hacks
       # TODO: Hack due to Rails 3.1 issue: https://github.com/rails/rails/issues/2663#issuecomment-1990121
-      ENV["RAILS_GROUPS"] ||= "assets"
-      ENV["RAILS_ENV"]    ||= @@rails_env
+      ENV['RAILS_GROUPS'] ||= 'assets'
+      ENV['RAILS_ENV']    ||= @@rails_env
     end
 
     # Methods to run the asset pipeline
@@ -24,7 +23,7 @@ module Guard
     def self.boot_rails
       return if @@rails_booted
       puts "Booting Rails for #{@@rails_env} environment."
-      require "fileutils"
+      require 'fileutils'
 
       apply_hacks
       require 'rake'
@@ -37,17 +36,17 @@ module Guard
     end
 
     def clean
-      Rake::Task["tmp:cache:clear"].execute
+      Rake::Task['tmp:cache:clear'].execute
       # copy from the "assets:clean" Rake task
       config = ::Rails.application.config
       public_asset_path = File.join(::Rails.public_path, config.assets.prefix)
-      rm_rf public_asset_path, :secure => true
+      rm_rf public_asset_path, secure: true
     end
 
     def precompile
       config = ::Rails.application.config
       unless config.assets.enabled
-        warn "Cannot precompile assets if sprockets is disabled. Enabling it."
+        warn 'Cannot precompile assets if sprockets is disabled. Enabling it.'
         config.assets.enabled = true
       end
 
@@ -66,12 +65,11 @@ module Guard
       compiler = Sprockets::StaticCompiler.new(env,
                                                target,
                                                config.assets.precompile,
-                                               :manifest_path => config.assets.manifest,
-                                               :digest => config.assets.digest,
-                                               :manifest => config.assets.digest.nil?)
+                                               manifest_path: config.assets.manifest,
+                                               digest: config.assets.digest,
+                                               manifest: config.assets.digest.nil?)
       compiler.compile
     end
-
 
     # Runs the asset pipeline compiler.
     #

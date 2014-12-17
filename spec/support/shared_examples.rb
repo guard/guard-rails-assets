@@ -1,6 +1,5 @@
-RSpec.shared_examples_for "guard command" do |info|
-
-  def set_run_on_option info
+RSpec.shared_examples_for 'guard command' do |info|
+  def set_run_on_option(info)
     # run_on_change -> change
     # run_all -> all
     run_option = info[:command].to_s.match(/(.*_)?(\w+)/)[2].to_sym
@@ -27,5 +26,4 @@ RSpec.shared_examples_for "guard command" do |info|
     end
     subject.send(info[:command])
   end
-
 end

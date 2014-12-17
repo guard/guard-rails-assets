@@ -2,17 +2,17 @@ require 'nenv'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
-     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
   config.mock_with :rspec do |mocks|
-     mocks.verify_partial_doubles = true
+    mocks.verify_partial_doubles = true
   end
 
   config.filter_run focus: !Nenv.ci?
   config.run_all_when_everything_filtered = true
 
-   config.disable_monkey_patching!
+  config.disable_monkey_patching!
 
   config.warnings = true
 

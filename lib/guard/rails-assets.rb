@@ -3,7 +3,7 @@ require 'guard/guard'
 
 module Guard
   class RailsAssets < Guard
-    def initialize(watchers=[], options={})
+    def initialize(watchers = [], options = {})
       super
       @options = options || {}
       @run_on = @options[:run_on] || [:start, :change]
@@ -24,7 +24,7 @@ module Guard
       compile_assets if run_for? :all
     end
 
-    def run_on_change(paths=[])
+    def run_on_change(_paths = [])
       compile_assets if run_for? :change
     end
 
@@ -33,10 +33,10 @@ module Guard
       result = runner.compile_assets
 
       if result
-        Notifier::notify 'Assets compiled'
+        Notifier.notify 'Assets compiled'
         puts 'Assets compiled.'
       else
-        Notifier::notify 'see the details in the terminal', :title => "Can't compile assets", :image => :failed
+        Notifier.notify 'see the details in the terminal', title: "Can't compile assets", image: :failed
         puts 'Failed to compile assets.'
       end
     end
@@ -50,9 +50,8 @@ module Guard
       end
     end
 
-    def run_for? command
+    def run_for?(command)
       @run_on.include?(command)
     end
   end
 end
-
