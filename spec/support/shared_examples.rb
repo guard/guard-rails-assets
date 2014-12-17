@@ -9,21 +9,21 @@ RSpec.shared_examples_for "guard command" do |info|
 
   it "should execute #{info[:command]} when said so" do
     set_run_on_option info
-    subject.should_receive(:compile_assets)
+    expect(subject).to receive(:compile_assets)
     subject.send(info[:command])
   end
   it "should not execute #{info[:command]} when disabled" do
     options[:run_on] = [:something_other]
-    subject.should_not_receive(:compile_assets)
+    expect(subject).not_to receive(:compile_assets)
     subject.send(info[:command])
   end
 
   it "should #{info[:run] ? '' : 'not '}execute #{info[:command]} by default" do
     options[:run_on] = nil
     if info[:run]
-      subject.should_receive(:compile_assets)
+      expect(subject).to receive(:compile_assets)
     else
-      subject.should_not_receive(:compile_assets)
+      expect(subject).not_to receive(:compile_assets)
     end
     subject.send(info[:command])
   end
