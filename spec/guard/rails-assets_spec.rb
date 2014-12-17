@@ -1,3 +1,4 @@
+require 'guard/compat/test/helper'
 require 'guard/rails-assets'
 
 require_relative '../support/shared_examples'
@@ -6,7 +7,7 @@ RSpec.describe Guard::RailsAssets do
   context 'with any runner' do
     let(:options) { { runner: :cli } }
     let(:runner) { double('runner') }
-    subject { Guard::RailsAssets.new(['watchers'], options) }
+    subject { Guard::RailsAssets.new(options) }
 
     before do
       allow(Guard::RailsAssets::CliRunner).to receive(:new).and_return runner
@@ -30,13 +31,13 @@ RSpec.describe Guard::RailsAssets do
 
     describe 'run options' do
       it 'should allow array of symbols' do
-        guard = Guard::RailsAssets.new(['watchers'], run_on: [:start, :change])
+        guard = Guard::RailsAssets.new(run_on: [:start, :change])
         expect(guard.run_for?(:start)).to be_truthy
         expect(guard.run_for?(:reload)).to be_falsey
       end
 
       it 'should allow symbol' do
-        guard = Guard::RailsAssets.new(['watchers'], run_on: :start)
+        guard = Guard::RailsAssets.new(run_on: :start)
         expect(guard.run_for?(:start)).to be_truthy
         expect(guard.run_for?(:reload)).to be_falsey
       end
@@ -49,13 +50,14 @@ RSpec.describe Guard::RailsAssets do
 
       it 'should notify on success' do
         stub_system_with true
-        expect(Guard::Notifier).to receive(:notify).with('Assets compiled')
+        expect(Guard::Compat::UI).to receive(:notify).with('Assets compiled')
         subject.compile_assets
       end
 
       it 'should notify on failure' do
         stub_system_with false
-        expect(Guard::Notifier).to receive(:notify).with('see the details in the terminal', title: "Can't compile assets", image: :failed)
+        expect(Guard::Compat::UI).to receive(:notify)
+          .with('see the details in the terminal', title: "Can't compile assets", image: :failed)
         subject.compile_assets
       end
     end
@@ -63,15 +65,15 @@ RSpec.describe Guard::RailsAssets do
 
   describe 'picking a runner' do
     it 'should use Rails runner by default' do
-      expect(Guard::RailsAssets.new(['watchers']).runner.class).to eq(::Guard::RailsAssets::RailsRunner)
+      expect(Guard::RailsAssets.new.runner.class).to eq(::Guard::RailsAssets::RailsRunner)
     end
 
     it 'should use CLI runner' do
-      expect(Guard::RailsAssets.new(['watchers'], runner: :cli).runner.class).to eq(::Guard::RailsAssets::CliRunner)
+      expect(Guard::RailsAssets.new(runner: :cli).runner.class).to eq(::Guard::RailsAssets::CliRunner)
     end
 
     it 'should use RailsRunner' do
-      expect(Guard::RailsAssets.new(['watchers'], runner: :rails).runner.class).to eq(::Guard::RailsAssets::RailsRunner)
+      expect(Guard::RailsAssets.new(runner: :rails).runner.class).to eq(::Guard::RailsAssets::RailsRunner)
     end
   end
 end

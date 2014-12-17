@@ -1,9 +1,8 @@
-require 'guard'
-require 'guard/guard'
+require 'guard/compat/plugin'
 
 module Guard
-  class RailsAssets < Guard
-    def initialize(watchers = [], options = {})
+  class RailsAssets < Plugin
+    def initialize(options = {})
       super
       @options = options || {}
       @run_on = @options[:run_on] || [:start, :change]
@@ -33,10 +32,10 @@ module Guard
       result = runner.compile_assets
 
       if result
-        Notifier.notify 'Assets compiled'
+        Compat::UI.notify 'Assets compiled'
         puts 'Assets compiled.'
       else
-        Notifier.notify 'see the details in the terminal', title: "Can't compile assets", image: :failed
+        Compat::UI.notify 'see the details in the terminal', title: "Can't compile assets", image: :failed
         puts 'Failed to compile assets.'
       end
     end
