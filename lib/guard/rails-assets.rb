@@ -52,5 +52,14 @@ module Guard
     def run_for?(command)
       @run_on.include?(command)
     end
+
+    def self.template(plugin_location)
+      File.read(template_path(plugin_location))
+    end
+
+    def self.template_path(plugin_location)
+      # workaround because Guard discards the '-' when detecting template path
+      File.join(plugin_location, 'lib', 'guard', 'rails-assets', 'templates', 'Guardfile')
+    end
   end
 end
