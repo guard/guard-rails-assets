@@ -1,9 +1,8 @@
-require 'guard'
-require 'guard/guard'
+require 'guard/compat/plugin'
 
 module Guard
-  class RailsAssets < Guard
-    def initialize(watchers=[], options={})
+  class RailsAssets < Plugin
+    def initialize(options = {})
       super
       @options = options || {}
       @run_on = @options[:run_on] || [:start, :change]
@@ -24,7 +23,7 @@ module Guard
       compile_assets if run_for? :all
     end
 
-    def run_on_change(paths=[])
+    def run_on_change(_paths = [])
       compile_assets if run_for? :change
     end
 
@@ -33,10 +32,10 @@ module Guard
       result = runner.compile_assets
 
       if result
-        Notifier::notify 'Assets compiled'
+        Compat::UI.notify 'Assets compiled'
         puts 'Assets compiled.'
       else
-        Notifier::notify 'see the details in the terminal', :title => "Can't compile assets", :image => :failed
+        Compat::UI.notify 'see the details in the terminal', title: "Can't compile assets", image: :failed
         puts 'Failed to compile assets.'
       end
     end
@@ -50,9 +49,17 @@ module Guard
       end
     end
 
-    def run_for? command
+    def run_for?(command)
       @run_on.include?(command)
+    end
+
+    def self.template(plugin_location)
+      File.read(template_path(plugin_location))
+    end
+
+    def self.template_path(plugin_location)
+      # workaround because Guard discards the '-' when detecting template path
+      File.join(plugin_location, 'lib', 'guard', 'rails-assets', 'templates', 'Guardfile')
     end
   end
 end
-
