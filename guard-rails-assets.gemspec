@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Guard::RailsAssetsVersion::VERSION
   s.authors     = ['Dmytrii Nagirniak']
   s.email       = ['dnagir@gmail.com']
-  s.homepage    = 'http://github.com/dnagir/guard-rails-assets'
+  s.homepage    = 'http://github.com/guard/guard-rails-assets'
   s.summary     = 'Guard for compiling Rails assets'
   s.description = 'guard-rails-assets automatically generates JavaScript, CSS, Image files using Rails assets pipelie'
 
